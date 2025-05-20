@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class LvAiAgentApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(LvAiAgentApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(LvAiAgentApplication.class, args);
+    }
 
 }
