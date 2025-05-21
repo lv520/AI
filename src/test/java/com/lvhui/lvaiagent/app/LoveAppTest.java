@@ -29,9 +29,17 @@ class LoveAppTest {
     void doChatWithReport() {
         String chatId = UUID.randomUUID().toString();
         // 第一轮
-        String message = "你好，我是程序员小辉，我想让另一半（编程导航）更爱我，但我不知道该怎么做";
+        String message = "你好，我是程序员小辉，我想让另一半更爱我，但我不知道该怎么做";
         LoveApp.LoveReport loveReport = loveApp.doChatWithReport(message, chatId);
         Assertions.assertNotNull(loveReport);
     }
 
+    @Test
+    void doChatWithRAG() {
+        String chatId = UUID.randomUUID().toString();
+        // 第一轮
+        String message = "你好，我是程序员小辉，婚后产生矛盾我该怎么办";
+        String answer = loveApp.doChatWithRAG(message, chatId);
+        Assertions.assertNotNull(answer);
+    }
 }

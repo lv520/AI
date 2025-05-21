@@ -3,13 +3,17 @@ package com.lvhui.lvaiagent.app;
 import com.lvhui.lvaiagent.advisor.MyLoggerAdvisor;
 import com.lvhui.lvaiagent.advisor.ReReadingAdvisor;
 import com.lvhui.lvaiagent.chatmemory.FileBasedChatMemory;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -85,5 +89,37 @@ public class LoveApp {
         log.info("loveReport: {}", loveReport);
         return loveReport;
     }
+    // 恋爱ai 知识库rag功能
 
+    @Resource
+    private VectorStore loveAppVectorStore;
+    @Resource
+    private Advisor loveAppRagCloudAdvisor;
+    @Resource
+    private VectorStore pgVectorVectorStore;
+    /**
+     * 本地rag功能
+     * @param message
+     * @param chatId
+     */
+    public String doChatWithRAG(String message, String chatId) {
+        ChatResponse chatResponse = chatClient
+                .prompt()
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                // 开启日志
+                .advisors(new MyLoggerAdvisor())
+                // 应用rag知识库问答（本地知识库）
+                .advisors(new QuestionAnswerAdvisor(loveAppVectorStore))
+                // 应用rag检索增强服务（基于云知识服务）
+//                .advisors(loveAppRagCloudAdvisor)
+                // 应用rag检索增强服务（基于pgvector）
+                //.advisors(new QuestionAnswerAdvisor(pgVectorVectorStore))
+                .call()
+                .chatResponse();
+        String content = chatResponse.getResult().getOutput().getText();
+        log.info("content:{}",content);
+        return content;
+    }
 }
