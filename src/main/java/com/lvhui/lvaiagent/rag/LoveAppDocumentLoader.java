@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 @Slf4j
 class LoveAppDocumentLoader {
-
+    // 用于解析资源路径模式（如文件路径、类路径资源等）
     private final ResourcePatternResolver resourcePatternResolver;
 
     LoveAppDocumentLoader(ResourcePatternResolver resourcePatternResolver) {
@@ -36,10 +36,12 @@ class LoveAppDocumentLoader {
             Resource[] resources = resourcePatternResolver.getResources("classpath:document/*.md");
             for (Resource resource : resources) {
                 String fileName = resource.getFilename();
+                // 通过MarkdownDocumentReaderConfig文档加载配置来指定读取文档的细节
                 MarkdownDocumentReaderConfig config = MarkdownDocumentReaderConfig.builder()
                         .withHorizontalRuleCreateDocument(true)
                         .withIncludeCodeBlock(false)
                         .withIncludeBlockquote(false)
+                        // 添加元信息，便于检索
                         .withAdditionalMetadata("filename", fileName)
                         .build();
                 MarkdownDocumentReader markdownDocumentReader = new MarkdownDocumentReader(resource, config);
