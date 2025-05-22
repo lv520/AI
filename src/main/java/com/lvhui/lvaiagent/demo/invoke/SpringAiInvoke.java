@@ -8,12 +8,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SpringAiInvoke implements CommandLineRunner {
+//public class SpringAiInvoke implements CommandLineRunner {
+public class SpringAiInvoke {
 //    @Resource
 //    private ChatModel dashscopeChatModel;
     @Resource
     private ChatModel ollamaChatModel;
-    @Override
+    //@Override
     public void run(String... args) throws Exception {
         AssistantMessage assistantMessage = ollamaChatModel.call(new Prompt("你好"))
                 .getResult()
