@@ -24,6 +24,7 @@ public class ToolRegistration {
         TerminalOperationTool terminalOperationTool = new TerminalOperationTool();
         PDFGenerationTool pdfGenerationTool = new PDFGenerationTool();
         GetTimeLocationTool getTimeLocationTool = new GetTimeLocationTool();
+        TerminateTool terminateTool = new TerminateTool();
         return ToolCallbacks.from(
                 fileOperationTool,
                 webSearchTool,
@@ -31,7 +32,8 @@ public class ToolRegistration {
                 resourceDownloadTool,
                 terminalOperationTool,
                 pdfGenerationTool,
-                getTimeLocationTool
+                getTimeLocationTool,
+                terminateTool
         );
     }
 }
